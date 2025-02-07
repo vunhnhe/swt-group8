@@ -33,7 +33,7 @@ public class HelloController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HelloController</title>");  
+            out.println("<title>EEEEEEEEEEEEEEEEEEEEEEEEEE</title>");  
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet HelloController at " + request.getContextPath () + "</h1>");
