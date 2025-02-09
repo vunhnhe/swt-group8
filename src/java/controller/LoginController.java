@@ -45,8 +45,16 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Giả lập xác thực (Thay thế bằng cơ sở dữ liệu thực)
+        if ("admin".equals(username) && "123456".equals(password)) {
+            response.sendRedirect("welcome.jsp");
+        } else {
+            response.getWriter().println("<script>alert('Sai thông tin đăng nhập!'); window.location='index.jsp';</script>");
+        }
     }
 
     @Override
