@@ -1,83 +1,77 @@
+<%@page import="java.util.List, model.Movie, model.Cinema, model.Screen, model.Showtime"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Showtimes</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 700px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        select {
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Choose Showtime</h1>
-        <form action="booking" method="post">
-            <table>
-                <tr>
-                    <th>Showtime ID</th>
-                    <th>Movie ID</th>
-                    <th>Screen ID</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                </tr>
-                <c:forEach var="showtime" items="${showtimes}">
-                    <tr>
-                        <td><input type="hidden" name="showtimeID" value="${showtime.showtimeID}" />${showtime.showtimeID}</td>
-                        <td><input type="hidden" name="movieID" value="${showtime.movieID}" />${showtime.movieID}</td>
-                        <td>
-                            <select name="screenID">
-                                <option value="${showtime.screenID}" selected>${showtime.screenID}</option>
-                                <!-- Add more options here as needed -->
-                            </select>
-                        </td>
-                        <td>${showtime.startTime}</td>
-                        <td>${showtime.endTime}</td>
-                    </tr>
-                </c:forEach>
-            </table>
-            <button type="submit">Book Showtime</button>
+    <head>
+        <title>Choose Showtime</title>
+<!--        <script>
+            function updateScreens() {
+                var cinemaID = document.getElementById("cinemaSelect").value;
+                fetch("getScreens?cinemaID=" + cinemaID)
+                        .then(response => response.json())
+                        .then(data => {
+                            var screenSelect = document.getElementById("screenSelect");
+                            screenSelect.innerHTML = "";
+                            data.forEach(screen => {
+                                screenSelect.innerHTML += `<option value="${screen.screenID}">${screen.screenName}</option>`;
+                            });
+                        });
+            }
+
+            function updateShowtimes() {
+                var movieID = document.getElementById("movieSelect").value;
+                var screenID = document.getElementById("screenSelect").value;
+                fetch("getShowtimes?movieID=" + movieID + "&screenID=" + screenID)
+                        .then(response => response.json())
+                        .then(data => {
+                            var startTimeSelect = document.getElementById("startTimeSelect");
+                            startTimeSelect.innerHTML = "";
+                            data.forEach(showtime => {
+                                startTimeSelect.innerHTML += `<option value="${showtime.startTime}">${showtime.startTime}</option>`;
+                            });
+                        });
+            }
+
+            function calculateEndTime() {
+                var startTime = new Date(document.getElementById("startTimeSelect").value);
+                var duration = parseInt(document.getElementById("movieSelect").selectedOptions[0].dataset.duration);
+                var endTime = new Date(startTime.getTime() + duration * 60000);
+                document.getElementById("endTimeDisplay").value = endTime.toLocaleTimeString();
+            }
+        </script>-->
+    </head>
+    <body>
+        <form>
+            <label>Movie Title:</label>
+            <select id="movieSelect" name="movieID" onchange="updateShowtimes()">
+                <% for (Movie movie : (List<Movie>) request.getAttribute("movies")) { %>
+                <option value="<%= movie.getMovieID() %>" data-duration="<%= movie.getDuration() %>">
+                    <%= movie.getTitle() %>
+                </option>
+                <% } %>
+            </select>
+            <br>
+
+            <label>Cinema Name:</label>
+            <select id="cinemaSelect" name="cinemaID" onchange="updateScreens()">
+                <% for (Cinema cinema : (List<Cinema>) request.getAttribute("cinemas")) { %>
+                <option value="<%= cinema.getCinemaID() %>"><%= cinema.getCinemaName() %></option>
+                <% } %>
+            </select>
+            <br>
+
+            <label>Screen Name:</label>
+            <select id="screenSelect" name="screenID" onchange="updateShowtimes()"></select>
+            <br>
+
+            <label>Start Time:</label>
+            <select id="startTimeSelect" name="startTime" onchange="calculateEndTime()"></select>
+            <br>
+
+            <label>End Time:</label>
+            <input type="text" id="endTimeDisplay" readonly>
+            <br>
+
+            <input type="submit" value="Confirm">
         </form>
-    </div>
-</body>
+    </body>
 </html>

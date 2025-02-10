@@ -4,7 +4,7 @@
  */
 package Model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -14,23 +14,13 @@ public class Showtime {
     private int ShowtimeID;
     private int MovieID;
     private int ScreenID;
-    private Date StartTime;
-    private Date EndTime;
+    private Timestamp StartTime;
+    private Timestamp EndTime;
     private int AdminID;
 
     public Showtime() {
     }
 
-    public Showtime(int ShowtimeID, int MovieID, int ScreenID, Date StartTime, Date EndTime, int AdminID) {
-        this.ShowtimeID = ShowtimeID;
-        this.MovieID = MovieID;
-        this.ScreenID = ScreenID;
-        this.StartTime = StartTime;
-        this.EndTime = EndTime;
-        this.AdminID = AdminID;
-    }
-    
-    
     public int getShowtimeID() {
         return ShowtimeID;
     }
@@ -55,19 +45,19 @@ public class Showtime {
         this.ScreenID = ScreenID;
     }
 
-    public Date getStartTime() {
+    public Timestamp getStartTime() {
         return StartTime;
     }
 
-    public void setStartTime(Date StartTime) {
+    public void setStartTime(Timestamp StartTime) {
         this.StartTime = StartTime;
     }
 
-    public Date getEndTime() {
+    public Timestamp getEndTime() {
         return EndTime;
     }
 
-    public void setEndTime(Date EndTime) {
+    public void setEndTime(Timestamp EndTime) {
         this.EndTime = EndTime;
     }
 
@@ -78,6 +68,6 @@ public class Showtime {
     public void setAdminID(int AdminID) {
         this.AdminID = AdminID;
     }
-    
+
     
 }
