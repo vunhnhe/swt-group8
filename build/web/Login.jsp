@@ -20,19 +20,6 @@
             align-items: center;
         }
 
-        /* Nền mờ khi hiển thị form */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
         /* Form đăng nhập */
         .login-box {
             width: 350px;
@@ -87,30 +74,23 @@
 </head>
 <body>
 
-    <!-- Nút đăng nhập góc trên phải -->
-    <div class="navbar">
-        <button class="login-btn" onclick="toggleLogin()">Đăng nhập</button>
-    </div>
-
     <!-- Form đăng nhập -->
-    <div class="overlay" id="overlay">
-        <div class="login-box">
-            <span class="close-btn" onclick="toggleLogin()">&times;</span>
-            <h3>Đăng nhập</h3>
-            <form action="LoginServlet" method="post">
-                <input type="text" name="username" placeholder="Tên đăng nhập" required>
-                <input type="password" name="password" placeholder="Mật khẩu" required>
-                <button type="submit">Đăng nhập</button>
-            </form>
-        </div>
+    <div class="login-box">
+        <h3>Đăng nhập</h3>
+        <form action="login" method="post">
+            <input type="text" name="username" placeholder="Tên đăng nhập" required>
+            <input type="password" name="password" placeholder="Mật khẩu" required>
+            <button type="submit">Đăng nhập</button>
+        </form>
+        <%
+            String errorMessage = (String) request.getAttribute("errorMessage");
+            if (errorMessage != null) {
+        %>
+            <p style="color: red;"><%= errorMessage %></p>
+        <%
+            }
+        %>
     </div>
-
-    <script>
-        function toggleLogin() {
-            var overlay = document.getElementById("overlay");
-            overlay.style.display = (overlay.style.display === "flex") ? "none" : "flex";
-        }
-    </script>
 
 </body>
 </html>

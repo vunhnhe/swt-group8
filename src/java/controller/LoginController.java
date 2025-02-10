@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Customer;
 
 /**
  *
@@ -57,7 +60,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("Login.jsp").forward(request, response);
     }
 
     /**
@@ -71,7 +74,20 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String customerName = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        CustomerDAO dao = new CustomerDAO();
+        Customer customer = dao.getCustomerByName(customerName);
+
+        if (customer != null && customer.getPassword().equals(password)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("customer", customer);
+            response.sendRedirect("loginSuccess.jsp");
+        } else {
+            request.setAttribute("errorMessage", "Invalid username or password. Please try again.");
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+        }
     }
 
     /**
