@@ -74,18 +74,17 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String customerName = request.getParameter("username");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         CustomerDAO dao = new CustomerDAO();
-        Customer customer = dao.getCustomerByName(customerName);
-
+        Customer customer = dao.getCustomerByName(username);
         if (customer != null && customer.getPassword().equals(password)) {
             HttpSession session = request.getSession();
             session.setAttribute("customer", customer);
-            response.sendRedirect("loginSuccess.jsp");
+            response.sendRedirect("loginSuccess.jsp"); // Redirect to customer dashboard
         } else {
-            request.setAttribute("errorMessage", "Invalid username or password. Please try again.");
+            request.setAttribute("errorMessage", "username or password incorrect!!");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
     }
