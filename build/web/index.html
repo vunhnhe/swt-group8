@@ -1,15 +1,122 @@
+<%-- 
+    Document   : index
+    Created on : Feb 11, 2025, 1:38:24 AM
+    Author     : tovie
+--%>
+
+
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>hello</div>
-    </body>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Ticket Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .banner {
+            background: url('images/banner.jpg') no-repeat center center/cover;
+            height: 400px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .banner h1 {
+            font-size: 50px;
+            margin: 0;
+        }
+        .container {
+            padding: 20px;
+        }
+        .featured-movies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .movie {
+            flex: 1 1 calc(33.333% - 20px);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .movie img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        .movie h3 {
+            margin: 10px 0;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.jsp">Home</a>
+        <a href="movies.jsp">Movies</a>
+        <a href="showtimes.jsp">Showtimes</a>
+        <a href="bookings.jsp">Bookings</a>
+        <a href="reviews.jsp">Reviews</a>
+        <a href="contact.jsp">Contact</a>
+        <a href="login.jsp">Login</a>
+    </div>
+    <div class="banner">
+        <h1>Welcome to Movie Ticket Booking</h1>
+    </div>
+    <div class="container">
+        <h2>Featured Movies</h2>
+        <div class="featured-movies">
+            <div class="movie">
+                <img src="images/movie1.jpg" alt="Movie 1">
+                <h3>Movie Title 1</h3>
+                <p>Some description about Movie 1.</p>
+            </div>
+            <div class="movie">
+                <img src="images/movie2.jpg" alt="Movie 2">
+                <h3>Movie Title 2</h3>
+                <p>Some description about Movie 2.</p>
+            </div>
+            <div class="movie">
+                <img src="images/movie3.jpg" alt="Movie 3">
+                <h3>Movie Title 3</h3>
+                <p>Some description about Movie 3.</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>&copy; 2025 Movie Ticket Booking. All rights reserved.</p>
+    </div>
+</body>
 </html>

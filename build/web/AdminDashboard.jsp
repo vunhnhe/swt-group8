@@ -26,6 +26,21 @@
             color: white;
             padding: 10px 0;
             text-align: center;
+            position: relative;
+        }
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .logout-btn:hover {
+            background-color: #ddd;
+            color: black;
         }
         .navbar {
             overflow: hidden;
@@ -74,6 +89,7 @@
 <body>
     <div class="header">
         <h1>Admin Dashboard</h1>
+        <a href="logout" class="logout-btn">đăng xuất</a>
     </div>
     <div class="navbar">
         <a href="adminDashboard.jsp">Home</a>
@@ -83,7 +99,6 @@
         <a href="manageBookings.jsp">Manage Bookings</a>
         <a href="manageReviews.jsp">Manage Reviews</a>
         <a href="manageVouchers.jsp">Manage Vouchers</a>
-        <a href="logout.jsp">Logout</a>
     </div>
     <div class="container">
         <div class="admin-actions">

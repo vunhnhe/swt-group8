@@ -37,11 +37,6 @@ public class LogoutController extends HttpServlet {
         response.sendRedirect("Login.jsp"); // Redirect to the login page
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "LogoutController handles admin and customer logout.";
