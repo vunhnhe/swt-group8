@@ -51,15 +51,19 @@ public class LoginController extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        CustomerDAO dao = new CustomerDAO();
-        AdminDAO adminDao = new AdminDAO();
-        Customer customer = dao.getCustomerByName(username);
-        Admin admin = adminDao.getAdminByName(username);
+        CustomerDAO customerDAO = new CustomerDAO();
+        AdminDAO adminDAO = new AdminDAO();
+        Customer customer = customerDAO.getCustomerByName(username);
+        Admin admin = adminDAO.getAdminByName(username);
 
         if (customer != null && customer.getPassword().equals(password)) {
             HttpSession session = request.getSession();
             session.setAttribute("customer", customer);
             response.sendRedirect("loginSuccess.jsp"); // Redirect to customer dashboard
+        } else if (admin != null && admin.getPassword().equals(password)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("admin", admin);
+            response.sendRedirect("AdminDashboard.jsp"); // Redirect to admin dashboard
         } else {
             request.setAttribute("errorMessage", "Invalid username or password. Please try again.");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
@@ -73,6 +77,6 @@ public class LoginController extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "LoginController handles customer login.";
+        return "LoginController handles login for both admin and customer.";
     }
 }

@@ -6,14 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.Admin"%>
-<%@page import="jakarta.servlet.http.HttpSession"%>
 <%
-    HttpSession session = request.getSession(false);
-    if (session == null || session.getAttribute("admin") == null) {
-        response.sendRedirect("AdminLogin.jsp");
-        return;
-    }
-    Admin admin = (Admin) session.getAttribute("admin");
+    Admin admin = (Admin) request.getAttribute("admin");
 %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -33,6 +27,24 @@
             padding: 10px 0;
             text-align: center;
         }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
         .container {
             padding: 20px;
         }
@@ -40,18 +52,22 @@
             margin-bottom: 20px;
         }
         .admin-actions {
-            list-style-type: none;
-            padding: 0;
-        }
-        .admin-actions li {
-            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
         }
         .admin-actions a {
+            flex: 1 1 calc(33.333% - 20px);
+            background-color: #2980b9;
+            color: white;
+            padding: 20px;
+            text-align: center;
             text-decoration: none;
-            color: #2980b9;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
         .admin-actions a:hover {
-            text-decoration: underline;
+            background-color: #1f618d;
         }
     </style>
 </head>
@@ -59,19 +75,25 @@
     <div class="header">
         <h1>Admin Dashboard</h1>
     </div>
+    <div class="navbar">
+        <a href="adminDashboard.jsp">Home</a>
+        <a href="manageUsers.jsp">Manage Users</a>
+        <a href="manageMovies.jsp">Manage Movies</a>
+        <a href="manageShowtimes.jsp">Manage Showtimes</a>
+        <a href="manageBookings.jsp">Manage Bookings</a>
+        <a href="manageReviews.jsp">Manage Reviews</a>
+        <a href="manageVouchers.jsp">Manage Vouchers</a>
+        <a href="logout.jsp">Logout</a>
+    </div>
     <div class="container">
-        <div class="welcome">
-            <h2>Welcome, <%= admin.getName() %>!</h2>
-            <p>You have successfully logged in as an admin.</p>
+        <div class="admin-actions">
+            <a href="manageUsers.jsp">Manage Users</a>
+            <a href="manageMovies.jsp">Manage Movies</a>
+            <a href="manageShowtimes.jsp">Manage Showtimes</a>
+            <a href="manageBookings.jsp">Manage Bookings</a>
+            <a href="manageReviews.jsp">Manage Reviews</a>
+            <a href="manageVouchers.jsp">Manage Vouchers</a>
         </div>
-        <ul class="admin-actions">
-            <li><a href="manageUsers.jsp">Manage Users</a></li>
-            <li><a href="manageMovies.jsp">Manage Movies</a></li>
-            <li><a href="manageShowtimes.jsp">Manage Showtimes</a></li>
-            <li><a href="manageBookings.jsp">Manage Bookings</a></li>
-            <li><a href="manageReviews.jsp">Manage Reviews</a></li>
-            <li><a href="manageVouchers.jsp">Manage Vouchers</a></li>
-        </ul>
     </div>
 </body>
 </html>
