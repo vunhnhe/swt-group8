@@ -1,77 +1,44 @@
-<%@page import="java.util.List, model.Movie, model.Cinema, model.Screen, model.Showtime"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="your.package.Movie" %>
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Choose Showtime</title>
-<!--        <script>
-            function updateScreens() {
-                var cinemaID = document.getElementById("cinemaSelect").value;
-                fetch("getScreens?cinemaID=" + cinemaID)
-                        .then(response => response.json())
-                        .then(data => {
-                            var screenSelect = document.getElementById("screenSelect");
-                            screenSelect.innerHTML = "";
-                            data.forEach(screen => {
-                                screenSelect.innerHTML += `<option value="${screen.screenID}">${screen.screenName}</option>`;
-                            });
-                        });
-            }
-
-            function updateShowtimes() {
-                var movieID = document.getElementById("movieSelect").value;
-                var screenID = document.getElementById("screenSelect").value;
-                fetch("getShowtimes?movieID=" + movieID + "&screenID=" + screenID)
-                        .then(response => response.json())
-                        .then(data => {
-                            var startTimeSelect = document.getElementById("startTimeSelect");
-                            startTimeSelect.innerHTML = "";
-                            data.forEach(showtime => {
-                                startTimeSelect.innerHTML += `<option value="${showtime.startTime}">${showtime.startTime}</option>`;
-                            });
-                        });
-            }
-
-            function calculateEndTime() {
-                var startTime = new Date(document.getElementById("startTimeSelect").value);
-                var duration = parseInt(document.getElementById("movieSelect").selectedOptions[0].dataset.duration);
-                var endTime = new Date(startTime.getTime() + duration * 60000);
-                document.getElementById("endTimeDisplay").value = endTime.toLocaleTimeString();
-            }
-        </script>-->
-    </head>
-    <body>
-        <form>
-            <label>Movie Title:</label>
-            <select id="movieSelect" name="movieID" onchange="updateShowtimes()">
-                <% for (Movie movie : (List<Movie>) request.getAttribute("movies")) { %>
-                <option value="<%= movie.getMovieID() %>" data-duration="<%= movie.getDuration() %>">
-                    <%= movie.getTitle() %>
-                </option>
-                <% } %>
-            </select>
-            <br>
-
-            <label>Cinema Name:</label>
-            <select id="cinemaSelect" name="cinemaID" onchange="updateScreens()">
-                <% for (Cinema cinema : (List<Cinema>) request.getAttribute("cinemas")) { %>
-                <option value="<%= cinema.getCinemaID() %>"><%= cinema.getCinemaName() %></option>
-                <% } %>
-            </select>
-            <br>
-
-            <label>Screen Name:</label>
-            <select id="screenSelect" name="screenID" onchange="updateShowtimes()"></select>
-            <br>
-
-            <label>Start Time:</label>
-            <select id="startTimeSelect" name="startTime" onchange="calculateEndTime()"></select>
-            <br>
-
-            <label>End Time:</label>
-            <input type="text" id="endTimeDisplay" readonly>
-            <br>
-
-            <input type="submit" value="Confirm">
-        </form>
-    </body>
+<head>
+    <title>Choose Showtime</title>
+</head>
+<body>
+    <h1>Choose Showtime</h1>
+    <form action="YourNextServlet" method="post">
+        <label for="movie">Movie Title:</label>
+        <select id="movie" name="movie">
+            <c:forEach items="${movies}" var="movie">
+                <option value="${movie.movieID}">${movie.title}</option>
+            </c:forEach>
+        </select>
+        <label for="cinema">Cinema Name:</label>
+        <select id="cinema" name="cinema">
+            <c:forEach items="${cinemas}" var="cinema">
+                <option value="${cinema.cinemaID}">${cinema.cinemaName}</option>
+            </c:forEach>
+        </select>
+        <label for="screen">Screen Name:</label>
+        <select id="screen" name="screen">
+            <c:forEach items="${screens}" var="screen">
+                <option value="${screen.screenID}">${screen.screenName}</option>
+            </c:forEach>
+        </select>
+        <label for="startTime">Start Time:</label>
+        <input type="datetime-local" id="startTime" name="startTime" required>
+        <label for="endTime">End Time:</label>
+        <input type="text" id="endTime" name="endTime" readonly>
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        document.getElementById('startTime').addEventListener('change', function() {
+            var duration = /* get duration from selected movie */;
+            var startTime = new Date(this.value);
+            var endTime = new Date(startTime.getTime() + duration * 60000);
+            document.getElementById('endTime').value = endTime.toISOString().slice(0, 16);
+        });
+    </script>
+</body>
 </html>
