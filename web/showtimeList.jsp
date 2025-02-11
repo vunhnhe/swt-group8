@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="your.package.Showtime" %>
+<%@ page import="model.Showtime" %>
 <!DOCTYPE html>
 <html>
 <head>

@@ -1,12 +1,11 @@
 package dal;
 
-import java.sql.Connection;
+import Model.Showtime;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import Model.Showtime;
 
 public class ShowtimeDAO extends DBContext {
     public List<Showtime> getShowtimesByMovieId(int movieID) {
@@ -48,5 +47,18 @@ public class ShowtimeDAO extends DBContext {
             e.printStackTrace();
         }
         return showtime;
+    }
+
+    public void saveShowtime(Showtime showtime) {
+        String sql = "INSERT INTO Showtime (MovieID, ScreenID, StartTime, EndTime) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, showtime.getMovieID());
+            stmt.setInt(2, showtime.getScreenID());
+            stmt.setTimestamp(3, showtime.getStartTime());
+            stmt.setTimestamp(4, showtime.getEndTime());
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

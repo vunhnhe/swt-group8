@@ -1,11 +1,10 @@
 package dal;
 
-import java.sql.Connection;
+import Model.Screen;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import Model.Screen;
 
 public class ScreenDAO extends DBContext {
     public List<Screen> getScreensByCinemaId(int cinemaID) {
@@ -27,7 +26,7 @@ public class ScreenDAO extends DBContext {
         }
         return screens;
     }
-    
+
     public Screen getScreenById(int screenID) {
         Screen screen = null;
         String sql = "SELECT * FROM Screen WHERE ScreenID = ?";

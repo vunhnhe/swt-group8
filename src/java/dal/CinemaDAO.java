@@ -1,11 +1,10 @@
 package dal;
 
-import java.sql.Connection;
+import Model.Cinema;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import Model.Cinema;
 
 public class CinemaDAO extends DBContext {
     public List<Cinema> getAllCinemas() {
@@ -26,7 +25,7 @@ public class CinemaDAO extends DBContext {
         }
         return cinemas;
     }
-    
+
     public Cinema getCinemaById(int cinemaID) {
         Cinema cinema = null;
         String sql = "SELECT * FROM Cinema WHERE CinemaID = ?";
