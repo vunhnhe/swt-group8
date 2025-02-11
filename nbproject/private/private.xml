@@ -3,20 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/GitHub/swp391-group6/src/java/Model/Showtime.java</file>
-            <file>file:/D:/GitHub/swp391-group6/src/java/dal/CinemaDAO.java</file>
-            <file>file:/D:/GitHub/swp391-group6/web/showtimeList.jsp</file>
-            <file>file:/D:/GitHub/swp391-group6/src/java/dal/ShowtimeDAO.java</file>
-            <file>file:/D:/GitHub/swp391-group6/web/showtime.jsp</file>
-            <file>file:/D:/GitHub/swp391-group6/web/chooseShowtime.jsp</file>
-            <file>file:/D:/GitHub/swp391-group6/web/Login.jsp</file>
-            <file>file:/D:/GitHub/swp391-group6/src/java/Model/Movie.java</file>
-            <file>file:/D:/GitHub/swp391-group6/src/java/Model/Cinema.java</file>
-            <file>file:/D:/GitHub/swp391-group6/src/java/controller/LoginController.java</file>
-            <file>file:/D:/GitHub/swp391-group6/src/java/dal/DBContext.java</file>
-            <file>file:/D:/GitHub/swp391-group6/src/java/controller/ShowtimeServlet.java</file>
-            <file>file:/D:/GitHub/swp391-group6/src/java/dal/ScreenDAO.java</file>
-            <file>file:/D:/GitHub/swp391-group6/src/java/Model/Screen.java</file>
+            <file>file:/D:/GitHub/swp391-group6/web/selectShowtime.jsp</file>
+            <file>file:/D:/GitHub/swp391-group6/web/showtimecss.css</file>
         </group>
     </open-files>
 </project-private>

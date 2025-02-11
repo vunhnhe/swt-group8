@@ -9,8 +9,12 @@
         <servlet-class>controller.ShowtimeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>NextServlet</servlet-name>
-        <servlet-class>controller.NextServlet</servlet-class>
+        <servlet-name>SelectShowtimeServlet</servlet-name>
+        <servlet-class>controller.SelectShowtimeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SeatSelectionServlet</servlet-name>
+        <servlet-class>controller.SeatSelectionServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -21,7 +25,11 @@
         <url-pattern>/ShowtimeServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>NextServlet</servlet-name>
-        <url-pattern>/NextServlet</url-pattern>
+        <servlet-name>SelectShowtimeServlet</servlet-name>
+        <url-pattern>/SelectShowtimeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SeatSelectionServlet</servlet-name>
+        <url-pattern>/SeatSelectionServlet</url-pattern>
     </servlet-mapping>
 </web-app>
