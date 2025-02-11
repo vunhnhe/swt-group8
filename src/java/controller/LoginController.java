@@ -4,51 +4,25 @@
  */
 package controller;
 
+import dal.AdminDAO;
 import dal.CustomerDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Admin;
 import model.Customer;
 
 /**
- *
- * @author tovie
+ * Servlet implementation class LoginController
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -78,13 +52,16 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
 
         CustomerDAO dao = new CustomerDAO();
+        AdminDAO adminDao = new AdminDAO();
         Customer customer = dao.getCustomerByName(username);
+        Admin admin = adminDao.getAdminByName(username);
+
         if (customer != null && customer.getPassword().equals(password)) {
             HttpSession session = request.getSession();
             session.setAttribute("customer", customer);
             response.sendRedirect("loginSuccess.jsp"); // Redirect to customer dashboard
         } else {
-            request.setAttribute("errorMessage", "username or password incorrect!!");
+            request.setAttribute("errorMessage", "Invalid username or password. Please try again.");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
     }
@@ -96,7 +73,6 @@ public class LoginController extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "LoginController handles customer login.";
+    }
 }
