@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Login
-    Created on : Feb 10, 2025, 12:50:16 AM
+    Document   : loginSuccess
+    Created on : Feb 11, 2025, 1:31:03 PM
     Author     : tovie
 --%>
 
@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Login Successfull</h1>
     </body>
 </html>

@@ -2,64 +2,81 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
+import dal.AdminDAO;
+import dal.CustomerDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Admin;
+import model.Customer;
 
 /**
- *
- * @author tovie
+ * Servlet implementation class LoginController
  */
+@WebServlet(name = "LoginController", urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
-   
-   
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    } 
+    private static final long serialVersionUID = 1L;
 
-  
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    } 
+            throws ServletException, IOException {
+        request.getRequestDispatcher("Login.jsp").forward(request, response);
+    }
 
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // Giả lập xác thực (Thay thế bằng cơ sở dữ liệu thực)
-        if ("admin".equals(username) && "123456".equals(password)) {
-            response.sendRedirect("welcome.jsp");
+        CustomerDAO customerDAO = new CustomerDAO();
+        AdminDAO adminDAO = new AdminDAO();
+        Customer customer = customerDAO.getCustomerByName(username);
+        Admin admin = adminDAO.getAdminByName(username);
+
+        if (customer != null && customer.getPassword().equals(password)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("customer", customer);
+            response.sendRedirect("loginSuccess.jsp"); // Redirect to customer dashboard
+        } else if (admin != null && admin.getPassword().equals(password)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("admin", admin);
+            response.sendRedirect("AdminDashboard.jsp"); // Redirect to admin dashboard
         } else {
-            response.getWriter().println("<script>alert('Sai thông tin đăng nhập!'); window.location='index.jsp';</script>");
+            request.setAttribute("errorMessage", "Invalid username or password. Please try again.");
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
     }
 
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "LoginController handles login for both admin and customer.";
+    }
 }

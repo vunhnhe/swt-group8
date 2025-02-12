@@ -1,0 +1,183 @@
+create database MovieTicketBooking
+go
+use MovieTicketBooking
+go
+CREATE TABLE Admin (
+    AdminID INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL,
+    Password NVARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Customer (
+    CustomerID INT IDENTITY(1,1) PRIMARY KEY,
+    Phone NVARCHAR(20) UNIQUE NOT NULL,
+    CustomerName NVARCHAR(100) NOT NULL,
+    Password NVARCHAR(255) NOT NULL,
+    Email NVARCHAR(100) NOT NULL,
+    Address NVARCHAR(MAX)
+);
+
+CREATE TABLE Movie (
+    MovieID INT IDENTITY(1,1) PRIMARY KEY,
+    Title NVARCHAR(255) NOT NULL,
+    Genre NVARCHAR(100) NOT NULL,
+    Duration INT NOT NULL,  -- Thời lượng phim (phút)
+    ReleaseDate DATE NOT NULL,
+    Description NVARCHAR(MAX)
+);
+
+CREATE TABLE Cinema (
+    CinemaID INT IDENTITY(1,1) PRIMARY KEY,
+    CinemaName NVARCHAR(255) NOT NULL,
+    Location NVARCHAR(MAX) NOT NULL,
+    NumberOfScreen INT NOT NULL,
+    AdminID INT NOT NULL,
+    FOREIGN KEY (AdminID) REFERENCES Admin(AdminID) ON DELETE NO ACTION   -- Không cho phép xóa Admin nếu còn rạp chiếu
+);
+
+CREATE TABLE Screen (
+    ScreenID INT IDENTITY(1,1) PRIMARY KEY,
+    CinemaID INT NOT NULL,
+    ScreenName NVARCHAR(100) NOT NULL,
+    TotalSeat INT NOT NULL,
+    FOREIGN KEY (CinemaID) REFERENCES Cinema(CinemaID) ON DELETE CASCADE
+);
+
+CREATE TABLE Seat (
+    SeatID INT IDENTITY(1,1) PRIMARY KEY,
+    ScreenID INT NOT NULL,
+    SeatNumber NVARCHAR(10) NOT NULL,
+    SeatType NVARCHAR(10) NOT NULL CHECK (SeatType IN ('VIP', 'Standard')),
+    Price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (ScreenID) REFERENCES Screen(ScreenID) ON DELETE CASCADE
+);
+
+CREATE TABLE Showtime (
+    ShowtimeID INT IDENTITY(1,1) PRIMARY KEY,
+    MovieID INT NOT NULL,
+    ScreenID INT NOT NULL,
+    StartTime DATETIME NOT NULL,
+    EndTime DATETIME NOT NULL,
+    AdminID INT NULL,  -- Cho phép NULL
+    FOREIGN KEY (MovieID) REFERENCES Movie(MovieID) ON DELETE CASCADE,
+    FOREIGN KEY (ScreenID) REFERENCES Screen(ScreenID) ON DELETE CASCADE,
+    FOREIGN KEY (AdminID) REFERENCES Admin(AdminID) ON DELETE SET NULL  -- Chỉnh sửa
+);
+
+CREATE TABLE Booking (
+    BookingID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerID INT NOT NULL,
+    BookingDate DATETIME NOT NULL DEFAULT GETDATE(),
+    TotalPrice DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE
+);
+
+CREATE TABLE Ticket (
+    TicketID INT IDENTITY(1,1) PRIMARY KEY,
+    BookingID INT NOT NULL,
+    ShowtimeID INT NOT NULL,
+    SeatID INT NOT NULL,
+    Price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (BookingID) REFERENCES Booking(BookingID) ON DELETE CASCADE,
+    FOREIGN KEY (ShowtimeID) REFERENCES Showtime(ShowtimeID) ON DELETE NO ACTION,
+    FOREIGN KEY (SeatID) REFERENCES Seat(SeatID) ON DELETE NO ACTION -- Khi Booking bị xóa, tất cả Ticket liên quan sẽ bị xóa. Nếu chỉ xóa suất chiếu hoặc ghế, vé vẫn tồn tại.
+);
+
+
+CREATE TABLE Review (
+    ReviewID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerID INT NOT NULL,
+    MovieID INT NOT NULL,
+    Rating INT CHECK (Rating BETWEEN 1 AND 5),
+    Comment NVARCHAR(MAX),
+    ReviewDate DATETIME NOT NULL DEFAULT GETDATE(),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE,
+    FOREIGN KEY (MovieID) REFERENCES Movie(MovieID) ON DELETE CASCADE
+);
+
+CREATE TABLE Voucher (
+    VoucherID INT IDENTITY(1,1) PRIMARY KEY,
+    Code NVARCHAR(50) UNIQUE NOT NULL,
+    DiscountAmount DECIMAL(10,2) NOT NULL,
+    ExpiryDate DATE NOT NULL,
+    AdminID INT NULL,  -- Cho phép NULL
+    FOREIGN KEY (AdminID) REFERENCES Admin(AdminID) ON DELETE SET NULL  -- Chỉnh sửa
+);
+
+CREATE TABLE Booking_Voucher (
+    BookingID INT NOT NULL,
+    VoucherID INT NOT NULL,
+    PRIMARY KEY (BookingID, VoucherID),
+    FOREIGN KEY (BookingID) REFERENCES Booking(BookingID) ON DELETE CASCADE,
+    FOREIGN KEY (VoucherID) REFERENCES Voucher(VoucherID) ON DELETE CASCADE
+);
+
+-- Sample data for Admin table
+INSERT INTO Admin (Name, Email, Password) VALUES
+('Admin1', 'admin1@example.com', 'password123'),
+('Admin2', 'admin2@example.com', 'password456');
+
+-- Sample data for Customer table
+INSERT INTO Customer (Phone, CustomerName, Password, Email, Address) VALUES
+('0123456789', 'Customer1', 'password789', 'customer1@example.com', 'Address1'),
+('0987654321', 'Customer2', 'password012', 'customer2@example.com', 'Address2');
+
+-- Sample data for Movie table
+INSERT INTO Movie (Title, Genre, Duration, ReleaseDate, Description) VALUES
+('Movie1', 'Action', 120, '2024-01-01', 'Description for Movie1'),
+('Movie2', 'Comedy', 90, '2024-02-01', 'Description for Movie2');
+
+-- Sample data for Cinema table
+INSERT INTO Cinema (CinemaName, Location, NumberOfScreen, AdminID) VALUES
+('Cinema1', 'Location1', 5, 1),
+('Cinema2', 'Location2', 3, 2);
+
+-- Sample data for Screen table
+INSERT INTO Screen (CinemaID, ScreenName, TotalSeat) VALUES
+(1, 'Screen1', 100),
+(1, 'Screen2', 80),
+(2, 'Screen3', 60);
+
+-- Sample data for Seat table
+INSERT INTO Seat (ScreenID, SeatNumber, SeatType, Price) VALUES
+(1, 'A1', 'VIP', 10.00),
+(1, 'A2', 'Standard', 7.50),
+(2, 'B1', 'VIP', 10.00),
+(2, 'B2', 'Standard', 7.50),
+(3, 'C1', 'VIP', 10.00),
+(3, 'C2', 'Standard', 7.50);
+
+-- Sample data for Showtime table
+INSERT INTO Showtime (MovieID, ScreenID, StartTime, EndTime, AdminID) VALUES
+(1, 1, '2024-01-15 10:00', '2024-01-15 12:00', 1),
+(2, 2, '2024-01-16 14:00', '2024-01-16 15:30', 2);
+
+-- Sample data for Booking table
+INSERT INTO Booking (CustomerID, BookingDate, TotalPrice) VALUES
+(1, GETDATE(), 20.00),
+(2, GETDATE(), 15.00);
+
+-- Sample data for Ticket table
+INSERT INTO Ticket (BookingID, ShowtimeID, SeatID, Price) VALUES
+(1, 1, 1, 10.00),
+(1, 1, 2, 7.50),
+(2, 2, 3, 10.00),
+(2, 2, 4, 7.50);
+
+-- Sample data for Review table
+INSERT INTO Review (CustomerID, MovieID, Rating, Comment, ReviewDate) VALUES
+(1, 1, 5, 'Great movie!', GETDATE()),
+(2, 2, 4, 'Very funny!', GETDATE());
+
+-- Sample data for Voucher table
+INSERT INTO Voucher (Code, DiscountAmount, ExpiryDate, AdminID) VALUES
+('VOUCHER1', 5.00, '2024-12-31', 1),
+('VOUCHER2', 7.50, '2024-12-31', 2);
+
+-- Sample data for Booking_Voucher table
+INSERT INTO Booking_Voucher (BookingID, VoucherID) VALUES
+(1, 1),
+(2, 2);
+
+
