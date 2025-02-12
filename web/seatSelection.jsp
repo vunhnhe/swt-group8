@@ -36,8 +36,30 @@
                     event.preventDefault();
                 }
             });
+
+            // Navigate back to the previous page
+            $("#backButton").click(function(event){
+                event.preventDefault();
+                window.history.back();
+            });
         });
     </script>
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px; /* Add space between buttons */
+        }
+        .button-container button:last-child {
+            margin-right: 0; /* Remove margin from the last button */
+        }
+    </style>
 </head>
 <body>
     
@@ -88,7 +110,10 @@
             </div>
         </div>
 
-        <button type="submit" id="confirmButton">Confirm Booking</button>
+        <div class="button-container">
+            <button type="button" id="backButton">Back</button>
+            <button type="submit" id="confirmButton">Confirm Booking</button>
+        </div>
     </form>
 </body>
 </html>

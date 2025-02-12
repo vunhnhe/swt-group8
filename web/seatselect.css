@@ -168,3 +168,19 @@ form button:disabled {
         height: 15px;
     }
 }
+
+.button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+.button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px; /* Add space between buttons */
+        }
+.button-container button:last-child {
+            margin-right: 0; /* Remove margin from the last button */
+        }
+        
