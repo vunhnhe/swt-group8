@@ -77,8 +77,9 @@
     <form action="SeatSelectionServlet" method="post">
         <div class="form-group">
             <label>Movie Title:</label>
-            <input type="text" id="movieTitle" name="movieTitle" value="<%= movie != null ? movie.getTitle() : "" %>" readonly  />
+            <input type="text" id="movieTitle" name="movieTitle" value="<%= movie != null ? movie.getTitle() : "" %>" readonly />
         </div>
+               
 
         <div class="form-group">
             <label>Cinema Name:</label>
@@ -118,7 +119,6 @@
 
         <button type="submit" id="continueButton">Continue</button>
     </form>
- <a href="SelectShowtimeServlet?movieID=1">Select Showtime for Movie 1</a>   
-
+            <a href="SelectShowtimeServlet?movieID=1">Select Showtime for Movie 1</a>
 </body>
 </html>

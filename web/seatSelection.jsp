@@ -27,6 +27,7 @@
                 $(".seat").removeClass("selected");
                 $(this).addClass("selected");
                 $("#selectedSeatID").val($(this).data("seatid"));
+                $("#selectedSeatName").val($(this).text());
             });
 
             // Validate form before submission
@@ -90,6 +91,12 @@
 
     <form action="ConfirmBookingServlet" method="post">
         <input type="hidden" id="selectedSeatID" name="seatID" value="" />
+        <input type="hidden" id="selectedSeatName" name="seatName" value="" />
+        <input type="hidden" name="movieTitle" value="<%= movieTitle %>" />
+        <input type="hidden" name="cinemaName" value="<%= cinemaName %>" />
+        <input type="hidden" name="screenName" value="<%= screenName %>" />
+        <input type="hidden" name="startTime" value="<%= startTime %>" />
+        <input type="hidden" name="endTime" value="<%= endTime %>" />
         <div class="seat-container">
             <div class="seat-grid">
                 <% for (Seat seat : seats) { %>

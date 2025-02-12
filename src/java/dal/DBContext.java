@@ -7,7 +7,7 @@ public class DBContext {
     private final String serverName = "HIUE\\MSSQLSERVER01";
     private final String dbName = "MovieTicketBooking";
     private final String portNumber = "1433";
-    private final String instance = ""; // Nếu là single instance thì để trống
+    private final String instance = ""; 
     private final String userID = "sa";
     private final String password = "123";
 
