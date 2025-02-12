@@ -5,11 +5,15 @@
         <group>
             <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/web/loginSuccess.jsp</file>
             <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/src/java/model/Admin.java</file>
+            <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/web/AdminDashboard.jsp</file>
+            <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/src/java/controller/LogoutController.java</file>
             <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/src/java/model/Customer.java</file>
             <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/web/Login.jsp</file>
             <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/src/java/dal/CustomerDAO.java</file>
+            <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/web/index.html</file>
             <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/src/java/dal/AdminDAO.java</file>
             <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/src/java/controller/LoginController.java</file>
+            <file>file:/C:/Users/tovie/OneDrive/Documents/GitHub/swp391-group6/src/java/dal/DBContext.java</file>
         </group>
     </open-files>
 </project-private>
