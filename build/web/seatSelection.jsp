@@ -4,12 +4,15 @@
 
 <%
     String movieTitle = (String) request.getAttribute("movieTitle");
-    String cinemaID = (String) request.getAttribute("cinemaID");
-    String screenID = (String) request.getAttribute("screenID");
-    String showtimeID = (String) request.getAttribute("showtimeID");
+    String cinemaName = (String) request.getAttribute("cinemaName");
+    String screenName = (String) request.getAttribute("screenName");
+    String startTime = (String) request.getAttribute("startTime");
     String endTime = (String) request.getAttribute("endTime");
 
     List<Seat> seats = (List<Seat>) request.getAttribute("seats");
+    if (seats == null) {
+        seats = new java.util.ArrayList<>();
+    }
 %>
 
 <!DOCTYPE html>
@@ -25,6 +28,14 @@
                 $(this).addClass("selected");
                 $("#selectedSeatID").val($(this).data("seatid"));
             });
+
+            // Validate form before submission
+            $("#confirmButton").click(function(event){
+                if ($("#selectedSeatID").val() === "") {
+                    alert("Please select a seat before confirming.");
+                    event.preventDefault();
+                }
+            });
         });
     </script>
 </head>
@@ -33,27 +44,26 @@
     <h2>Seat Selection</h2>
 
     <table class="details-table">
-            <tr>
-                <td>Movie Title:</td>
-                <td><%= movieTitle %></td>
-            </tr>
-            <tr>
-                <td>Cinema ID:</td>
-                <td><%= cinemaID %></td>
-            </tr>
-            <tr>
-                <td>Screen ID:</td>
-                <td><%= screenID %></td>
-            </tr>
-            <tr>
-                <td>Start Time:</td>
-                <td><%= showtimeID %></td>
-            </tr>
-            <tr>
-                <td>End Time: </td>
-                <td><%= endTime %></td>
-            </tr>
-     
+        <tr>
+            <td>Movie Title:</td>
+            <td><%= movieTitle %></td>
+        </tr>
+        <tr>
+            <td>Cinema Name:</td>
+            <td><%= cinemaName %></td>
+        </tr>
+        <tr>
+            <td>Screen Name:</td>
+            <td><%= screenName %></td>
+        </tr>
+        <tr>
+            <td>Start Time:</td>
+            <td><%= startTime %></td>
+        </tr>
+        <tr>
+            <td>End Time:</td>
+            <td><%= endTime %></td>
+        </tr>
     </table>
 
     <form action="ConfirmBookingServlet" method="post">
@@ -78,7 +88,7 @@
             </div>
         </div>
 
-        <button type="submit">Confirm Booking</button>
+        <button type="submit" id="confirmButton">Confirm Booking</button>
     </form>
 </body>
 </html>

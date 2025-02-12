@@ -59,6 +59,13 @@
                 if ($("#cinemaSelect").val() === "" || $("#screenSelect").val() === "" || $("#showtimeSelect").val() === "") {
                     alert("Please select Cinema, Screen, and Showtime before continuing.");
                     event.preventDefault();
+                } else {
+                    // Set hidden fields with selected values
+                    $("#selectedMovieTitle").val($("#movieTitle").val());
+                    $("#selectedCinemaName").val($("#cinemaSelect option:selected").text());
+                    $("#selectedScreenName").val($("#screenSelect option:selected").text());
+                    $("#selectedStartTime").val($("#showtimeSelect option:selected").text());
+                    $("#selectedEndTime").val($("#endTime").val());
                 }
             });
         });
@@ -70,7 +77,7 @@
     <form action="SeatSelectionServlet" method="post">
         <div class="form-group">
             <label>Movie Title:</label>
-            <input type="text" name="movieTitle" value="<%= movie != null ? movie.getTitle() : "" %>" readonly />
+            <input type="text" id="movieTitle" name="movieTitle" value="<%= movie != null ? movie.getTitle() : "" %>" readonly  />
         </div>
 
         <div class="form-group">
@@ -102,9 +109,16 @@
             <input type="text" id="endTime" name="endTime" readonly />
         </div>
 
+        <!-- Hidden fields to pass selected values -->
+        <input type="hidden" id="selectedMovieTitle" name="selectedMovieTitle" />
+        <input type="hidden" id="selectedCinemaName" name="selectedCinemaName" />
+        <input type="hidden" id="selectedScreenName" name="selectedScreenName" />
+        <input type="hidden" id="selectedStartTime" name="selectedStartTime" />
+        <input type="hidden" id="selectedEndTime" name="selectedEndTime" />
+
         <button type="submit" id="continueButton">Continue</button>
     </form>
-        
-    <a href="SelectShowtimeServlet?movieID=1">Select Showtime for Movie 1</a>   
+ <a href="SelectShowtimeServlet?movieID=1">Select Showtime for Movie 1</a>   
+
 </body>
 </html>
