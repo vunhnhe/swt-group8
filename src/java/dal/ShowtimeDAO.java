@@ -9,6 +9,29 @@ import java.util.logging.Logger;
 
 public class ShowtimeDAO extends DBContext {
 
+    public List<Showtime> getAllShowtimesByScreen() {
+        List<Showtime> showtimes = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Showtime";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Showtime showtime = new Showtime(
+                        rs.getInt("showtimeID"),
+                        rs.getInt("movieID"),
+                        rs.getInt("screenID"),
+                        rs.getTimestamp("startTime"),
+                        rs.getTimestamp("endTime"),
+                        rs.getInt("adminID")
+                );
+                showtimes.add(showtime);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ShowtimeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return showtimes;
+    }
+
     public List<Showtime> getShowtimesByScreenID(int screenID) {
         List<Showtime> showtimes = new ArrayList<>();
         try {
