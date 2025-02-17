@@ -167,6 +167,22 @@ public class CustomerDAO extends DBContext {
         }
         return false;
     }
+    public boolean addCustomer(Customer customer) {
+        try {
+            String sql = "INSERT INTO customer (Phone, CustomerName, Password, Email, Address) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, customer.getPhone());
+            ps.setString(2, customer.getName());
+            ps.setString(3, customer.getPassword());
+            ps.setString(4, customer.getEmail());
+            ps.setString(5, customer.getAddress());
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();

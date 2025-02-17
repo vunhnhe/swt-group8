@@ -79,7 +79,45 @@
         tr:hover {
             background-color: #f1f1f1;
         }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 3px solid #2980b9;
+        }
+        .popup input {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0;
+        }
+        .popup .close-btn {
+            cursor: pointer;
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+        }
     </style>
+    <script>
+        function openPopup(id, phone, name, password, email, address) {
+            document.getElementById("customerID").value = id;
+            document.getElementById("phone").value = phone;
+            document.getElementById("name").value = name;
+            document.getElementById("password").value = password;
+            document.getElementById("email").value = email;
+            document.getElementById("address").value = address;
+            document.getElementById("popup").style.display = "block";
+        }
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
 </head>
 <body>
     <div class="header">
@@ -99,7 +137,8 @@
 
     <div class="container">
         <div class="table-container">
-            <h2 class="text-center">Danh sách người dùng</h2>
+            <h2 class="text-center" style="display: inline-block;">Danh sách người dùng</h2>
+            <button onclick="openAddPopup()" style="float: right; padding: 8px 12px; background-color: #2980b9; color: white; border: none; border-radius: 5px; cursor: pointer;">Add User</button>
             <table>
                 <thead>
                     <tr>
@@ -124,11 +163,11 @@
                         <td><%= customer.getEmail() %></td>
                         <td><%= customer.getAddress() %></td>
                         <td>
-                            <a href="editUser.jsp?customerID=<%= customer.getId() %>" class="edit-btn">Edit</a>
-                            <form action="User" method="post" style="display:inline;">
+                            <button onclick="openPopup('<%= customer.getId() %>', '<%= customer.getPhone() %>', '<%= customer.getName() %>', '<%= customer.getPassword() %>', '<%= customer.getEmail() %>', '<%= customer.getAddress() %>')">Edit</button>
+                            <form id="deleteForm-<%= customer.getId() %>" action="user" method="post" style="display:inline;">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="customerID" value="<%= customer.getId() %>">
-                                <button type="submit" class="delete-btn">Delete</button>
+                                <button type="button" class="delete-btn" onclick="confirmDelete('<%= customer.getId() %>')">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -141,5 +180,47 @@
             </table>
         </div>
     </div>
+    
+    <div id="popup" class="popup">
+        <form action="user" method="post">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" id="customerID" name="customerID">
+            <input type="text" id="phone" name="phone" placeholder="Phone">
+            <input type="text" id="name" name="name" placeholder="Name">
+            <input type="text" id="password" name="password" placeholder="Password">
+            <input type="text" id="email" name="email" placeholder="Email">
+            <input type="text" id="address" name="address" placeholder="Address">
+            <button type="submit">Save</button>
+            <button type="button" class="close-btn" onclick="closePopup()">Close</button>
+        </form>
+    </div>
+<div id="addPopup" class="popup">
+        <form action="user" method="post">
+            <input type="hidden" name="action" value="add">
+            <input type="text" name="phone" placeholder="Phone" required>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="password" placeholder="Password" required>
+            <input type="text" name="email" placeholder="Email" required>
+            <input type="text" name="address" placeholder="Address" required>
+            <button type="submit">Add</button>
+            <button type="button" class="close-btn" onclick="closeAddPopup()">Close</button>
+        </form>
+    </div>
+    
+    <script>
+        function openAddPopup() {
+            document.getElementById("addPopup").style.display = "block";
+        }
+        function closeAddPopup() {
+            document.getElementById("addPopup").style.display = "none";
+        }
+    </script>
+    <script>
+        function confirmDelete(customerID) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                document.getElementById('deleteForm-' + customerID).submit();
+            }
+        }
+    </script>
 </body>
 </html>
