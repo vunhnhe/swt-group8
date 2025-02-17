@@ -2,20 +2,12 @@ package model;
 
 public class Seat {
     private int seatID;
-    private int screenID;
+    private Screen screen;
     private String seatNumber;
     private String seatType;
     private double price;
 
     public Seat() {}
-
-    public Seat(int seatID, int screenID, String seatNumber, String seatType, double price) {
-        this.seatID = seatID;
-        this.screenID = screenID;
-        this.seatNumber = seatNumber;
-        this.seatType = seatType;
-        this.price = price;
-    }
 
     public int getSeatID() {
         return seatID;
@@ -25,12 +17,12 @@ public class Seat {
         this.seatID = seatID;
     }
 
-    public int getScreenID() {
-        return screenID;
+    public Screen getScreen() {
+        return screen;
     }
 
-    public void setScreenID(int screenID) {
-        this.screenID = screenID;
+    public void setScreen(Screen screen) {
+        this.screen = screen;
     }
 
     public String getSeatNumber() {
@@ -56,4 +48,6 @@ public class Seat {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    
 }

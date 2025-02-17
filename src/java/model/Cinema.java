@@ -5,17 +5,11 @@ public class Cinema {
     private String cinemaName;
     private String location;
     private int numberOfScreen;
-    private int adminID;
+    private Admin adminID;
 
     public Cinema() {}
 
-    public Cinema(int cinemaID, String cinemaName, String location, int numberOfScreen, int adminID) {
-        this.cinemaID = cinemaID;
-        this.cinemaName = cinemaName;
-        this.location = location;
-        this.numberOfScreen = numberOfScreen;
-        this.adminID = adminID;
-    }
+    
 
     public int getCinemaID() {
         return cinemaID;
@@ -49,11 +43,13 @@ public class Cinema {
         this.numberOfScreen = numberOfScreen;
     }
 
-    public int getAdminID() {
+    public Admin getAdminID() {
         return adminID;
     }
 
-    public void setAdminID(int adminID) {
+    public void setAdminID(Admin adminID) {
         this.adminID = adminID;
     }
+
+    
 }

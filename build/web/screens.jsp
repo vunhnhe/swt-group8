@@ -10,6 +10,6 @@
 %>
 
 <option value="">Select Screen</option>
-<% for (Screen s : screens) { %>
-    <option value="<%= s.getScreenID() %>"><%= s.getScreenName() %></option>
+<% for (Screen screen : screens) { %>
+    <option value="<%= screen.getScreenID() %>"><%= screen.getScreenName() %></option>
 <% } %>

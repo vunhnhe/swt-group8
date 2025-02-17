@@ -17,7 +17,7 @@
                 confirmButtonText: 'OK'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = 'index.jsp';
+                    window.location.href = 'Login.jsp';
                 }
             });
         };
