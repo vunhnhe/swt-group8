@@ -10,7 +10,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //@WebServlet("/movieDetails")
 public class MovieDetailsServlet extends HttpServlet {
@@ -23,7 +25,8 @@ public class MovieDetailsServlet extends HttpServlet {
             MovieDAO movieDAO = new MovieDAO();
             Movie movie = movieDAO.getMovieById(movieId);
             List<Showtime> showtimes = movieDAO.getShowtimesByMovieId(movieId);
-            List<Review> reviews = movieDAO.getReviewsByMovieId(movieId);
+            Map<Integer, String> customerNames = new HashMap<>();
+            List<Review> reviews = movieDAO.getReviewsByMovieId(movieId, customerNames);
 
             // Tính trung bình cộng các đánh giá
             double averageRating = 0;
@@ -38,6 +41,7 @@ public class MovieDetailsServlet extends HttpServlet {
             request.setAttribute("movie", movie);
             request.setAttribute("showtimes", showtimes);
             request.setAttribute("reviews", reviews);
+            request.setAttribute("customerNames", customerNames);
             request.setAttribute("averageRating", String.format("%.1f", averageRating));
             request.getRequestDispatcher("movieDetails.jsp").forward(request, response);
         } else {

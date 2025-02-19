@@ -2,9 +2,6 @@ package dal;
 
 import model.Movie;
 import model.Showtime;
-import model.Screen;
-import model.Cinema;
-import model.Admin;
 import model.Review;
 
 import java.sql.Connection;
@@ -12,6 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import model.Admin;
+import model.Cinema;
+import model.Screen;
 
 public class MovieDAO extends DBContext {
 
@@ -107,9 +108,10 @@ public class MovieDAO extends DBContext {
         return showtimes;
     }
 
-    public List<Review> getReviewsByMovieId(int movieID) {
+    
+    public List<Review> getReviewsByMovieId(int movieID, Map<Integer, String> customerNames) {
         List<Review> reviews = new ArrayList<>();
-        String sql = "SELECT * FROM Review WHERE MovieID = ?";
+        String sql = "SELECT r.*, c.CustomerName FROM Review r JOIN Customer c ON r.CustomerID = c.CustomerID WHERE r.MovieID = ?";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, movieID);
@@ -122,6 +124,7 @@ public class MovieDAO extends DBContext {
                     review.setRating(rs.getInt("Rating"));
                     review.setComment(rs.getString("Comment"));
                     review.setReviewDate(rs.getDate("ReviewDate"));
+                    customerNames.put(review.getCustomerID(), rs.getString("CustomerName")); // Lấy tên khách hàng
                     reviews.add(review);
                 }
             }
@@ -129,5 +132,68 @@ public class MovieDAO extends DBContext {
             e.printStackTrace();
         }
         return reviews;
+    }
+
+    public void addReview(Review review) {
+        String sql = "INSERT INTO Review (CustomerID, MovieID, Rating, Comment, ReviewDate) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, review.getCustomerID());
+            ps.setInt(2, review.getMovieID());
+            ps.setInt(3, review.getRating());
+            ps.setString(4, review.getComment());
+            ps.setDate(5, new java.sql.Date(review.getReviewDate().getTime()));
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteReview(int reviewID) {
+        String sql = "DELETE FROM Review WHERE ReviewID = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, reviewID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Review getReviewById(int reviewID) {
+        Review review = null;
+        String sql = "SELECT * FROM Review WHERE ReviewID = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, reviewID);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    review = new Review();
+                    review.setReviewID(rs.getInt("ReviewID"));
+                    review.setCustomerID(rs.getInt("CustomerID"));
+                    review.setMovieID(rs.getInt("MovieID"));
+                    review.setRating(rs.getInt("Rating"));
+                    review.setComment(rs.getString("Comment"));
+                    review.setReviewDate(rs.getDate("ReviewDate"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return review;
+    }
+
+    public void updateReview(Review review) {
+        String sql = "UPDATE Review SET Rating = ?, Comment = ?, ReviewDate = ? WHERE ReviewID = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, review.getRating());
+            ps.setString(2, review.getComment());
+            ps.setDate(3, new java.sql.Date(review.getReviewDate().getTime()));
+            ps.setInt(4, review.getReviewID());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
