@@ -28,12 +28,12 @@ public class SelectShowtimeServlet extends HttpServlet {
             List<Showtime> showtimes = showtimeDAO.getShowtimesByMovieId(movieId);
             List<Cinema> cinemas = showtimeDAO.getAllCinemas();
             List<Screen> screens = showtimeDAO.getAllScreens();
-            List<Seat> seats = showtimeDAO.getAllSeats();
+            
             Movie movie = movieDAO.getMovieById(movieId); // Assuming you have a method to get movie details by ID
             request.setAttribute("showtimes", showtimes);
             request.setAttribute("cinemas", cinemas);
             request.setAttribute("screens", screens);
-            request.setAttribute("seats", seats);
+
             request.setAttribute("movieTitle", movie.getTitle()); // Pass the movie title to the JSP
         }
         request.getRequestDispatcher("/selectShowtime.jsp").forward(request, response);

@@ -3,7 +3,7 @@
 <%@ page import="model.Showtime" %>
 <%@ page import="model.Cinema" %>
 <%@ page import="model.Screen" %>
-<%@ page import="model.Seat" %>
+
 <%@ page import="jakarta.servlet.http.HttpServletRequest" %>
 <%@ page import="jakarta.servlet.http.HttpServletResponse" %>
 <%@ page import="jakarta.servlet.RequestDispatcher" %>
@@ -13,7 +13,7 @@
     List<Showtime> showtimes = (List<Showtime>) request.getAttribute("showtimes");
     List<Cinema> cinemas = (List<Cinema>) request.getAttribute("cinemas");
     List<Screen> screens = (List<Screen>) request.getAttribute("screens");
-    List<Seat> seats = (List<Seat>) request.getAttribute("seats");
+    
     String movieTitle = (String) request.getAttribute("movieTitle");
     int movieId = Integer.parseInt(request.getParameter("movieId"));
 %>
@@ -44,7 +44,7 @@
                     document.getElementById('screen').innerHTML = '<option value="">--Select Screen--</option>';
                     document.getElementById('showtime').innerHTML = '<option value="">--Select Start Time--</option>';
                     document.getElementById('endtime').value = '';
-                    document.getElementById('seat').innerHTML = '<option value="">--Select Seat--</option>';
+                    
                 });
 
                 document.getElementById('screen').addEventListener('change', function () {
@@ -53,13 +53,14 @@
                     document.getElementById('seat').disabled = true;
                     document.getElementById('showtime').innerHTML = '<option value="">--Select Start Time--</option>';
                     document.getElementById('endtime').value = '';
-                    document.getElementById('seat').innerHTML = '<option value="">--Select Seat--</option>';
+                    
                 });
 
                 document.getElementById('showtime').addEventListener('change', function () {
                     var selectedOption = this.options[this.selectedIndex];
                     var endTime = selectedOption.getAttribute('data-endtime');
                     document.getElementById('endtime').value = endTime;
+                    fetchSeats();
                     document.getElementById('seat').disabled = false;
                 });
             });
@@ -117,6 +118,8 @@
                     document.getElementById('showtime').innerHTML = '<option value="">--Select Start Time--</option>';
                 }
             }
+
+            
         </script>
     </head>
     <body>
@@ -126,12 +129,13 @@
 
         <nav id="main-nav">
             <a href="index.jsp">Home</a>
-            <a href="bookings.jsp">My Bookings</a>
+            <a href="movies.jsp">Movies</a>
+            <a href="contact.jsp">Contact</a>
         </nav>
 
         <div class="container">
             <h2><%= movieTitle %></h2>
-            <form action="confirmBooking.jsp" method="post">
+            <form action="selectSeat.jsp" method="post">
                 <label for="cinema">Cinema:</label>
                 <select id="cinema" name="cinemaId" required>
                     <option value="">--Select Cinema--</option>
@@ -171,23 +175,7 @@
                     </table>
                 </div>
 
-                <label for="seat">Seat:</label>
-                <select id="seat" name="seatId" required disabled>
-                    <option value="">--Select Seat--</option>
-                    <%
-                        if (seats != null) {
-                            for (Seat seat : seats) {
-                    %>
-                    <option value="<%= seat.getSeatID() %>">
-                        <%= seat.getSeatNumber() %>
-                    </option>
-                    <%
-                            }
-                        }
-                    %>
-                </select>
-
-                <button type="submit" class="confirm-booking-button">Confirm Booking</button>
+                <button type="submit" class="confirm-booking-button">Select Seat</button>
             </form>
         </div>
         <footer class="footer">

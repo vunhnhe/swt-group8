@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import model.Admin;
+import model.Movie;
 
 public class ShowtimeDAO extends DBContext {
 
@@ -153,40 +154,58 @@ public class ShowtimeDAO extends DBContext {
         }
         return screens;
     }
-
-    public List<Seat> getAllSeats() {
-        List<Seat> seats = new ArrayList<>();
-        String sql = "SELECT s.SeatID, s.SeatNumber, s.ScreenID, sc.ScreenName, sc.CinemaID, c.CinemaName, c.Location " +
-                     "FROM Seat s " +
+public Showtime getShowtimeById(int showtimeId) {
+        Showtime showtime = null;
+        String sql = "SELECT s.*, sc.*, c.*, a.*, m.* FROM Showtime s " +
                      "JOIN Screen sc ON s.ScreenID = sc.ScreenID " +
-                     "JOIN Cinema c ON sc.CinemaID = c.CinemaID";
+                     "JOIN Cinema c ON sc.CinemaID = c.CinemaID " +
+                     "JOIN Admin a ON s.AdminID = a.AdminID " +
+                     "JOIN Movie m ON s.MovieID = m.MovieID " +
+                     "WHERE s.ShowtimeID = ?";
         try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Seat seat = new Seat();
-                seat.setSeatID(rs.getInt("SeatID"));
-                seat.setSeatNumber(rs.getString("SeatNumber"));
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, showtimeId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    showtime = new Showtime();
+                    showtime.setShowtimeID(rs.getInt("ShowtimeID"));
+                    showtime.setStartTime(rs.getTimestamp("StartTime"));
+                    showtime.setEndTime(rs.getTimestamp("EndTime"));
 
-                Screen screen = new Screen();
-                screen.setScreenID(rs.getInt("ScreenID"));
-                screen.setScreenName(rs.getString("ScreenName"));
+                    Screen screen = new Screen();
+                    screen.setScreenID(rs.getInt("ScreenID"));
+                    screen.setScreenName(rs.getString("ScreenName"));
+                    screen.setTotalSeat(rs.getInt("TotalSeat"));
 
-                Cinema cinema = new Cinema();
-                cinema.setCinemaID(rs.getInt("CinemaID"));
-                cinema.setCinemaName(rs.getString("CinemaName"));
-                cinema.setLocation(rs.getString("Location"));
+                    Cinema cinema = new Cinema();
+                    cinema.setCinemaID(rs.getInt("CinemaID"));
+                    cinema.setCinemaName(rs.getString("CinemaName"));
+                    cinema.setLocation(rs.getString("Location"));
+                    cinema.setNumberOfScreen(rs.getInt("NumberOfScreen"));
 
-                screen.setCinemaID(cinema);
-                seat.setScreen(screen);
+                    Admin admin = new Admin();
+                    admin.setAdminID(rs.getInt("AdminID"));
+                    admin.setName(rs.getString("Name"));
+                    admin.setEmail(rs.getString("Email"));
+                    admin.setPassword(rs.getString("Password"));
 
-                seats.add(seat);
+                    Movie movie = new Movie();
+                    movie.setMovieID(rs.getInt("MovieID"));
+                    movie.setTitle(rs.getString("Title"));
+                    movie.setGenre(rs.getString("Genre"));
+                    movie.setDuration(rs.getInt("Duration"));
+                    movie.setReleaseDate(rs.getDate("ReleaseDate"));
+                    movie.setDescription(rs.getString("Description"));
+
+                    screen.setCinemaID(cinema);
+                    showtime.setScreenID(screen);
+                    showtime.setAdminID(admin);
+                    showtime.setMovieID(movie);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return seats;
+        return showtime;
     }
-    
-    
 }
