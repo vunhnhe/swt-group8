@@ -3,6 +3,9 @@ package dal;
 import model.Movie;
 import model.Showtime;
 import model.Review;
+import model.Cinema;
+import model.Screen;
+import model.Seat;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,8 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import model.Admin;
-import model.Cinema;
-import model.Screen;
 
 public class MovieDAO extends DBContext {
 
@@ -40,19 +41,19 @@ public class MovieDAO extends DBContext {
 
     public Movie getMovieById(int movieID) {
         Movie movie = null;
-        String sql = "SELECT * FROM Movie WHERE MovieID = ?";
+        String sql = "SELECT * FROM Movie WHERE movieID = ?";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, movieID);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     movie = new Movie();
-                    movie.setMovieID(rs.getInt("MovieID"));
-                    movie.setTitle(rs.getString("Title"));
-                    movie.setGenre(rs.getString("Genre"));
-                    movie.setDuration(rs.getInt("Duration"));
-                    movie.setReleaseDate(rs.getDate("ReleaseDate"));
-                    movie.setDescription(rs.getString("Description"));
+                    movie.setMovieID(rs.getInt("movieID"));
+                    movie.setTitle(rs.getString("title"));
+                    movie.setGenre(rs.getString("genre"));
+                    movie.setDuration(rs.getInt("duration"));
+                    movie.setReleaseDate(rs.getDate("releaseDate"));
+                    movie.setDescription(rs.getString("description"));
                 }
             }
         } catch (Exception e) {
@@ -108,7 +109,6 @@ public class MovieDAO extends DBContext {
         return showtimes;
     }
 
-    
     public List<Review> getReviewsByMovieId(int movieID, Map<Integer, String> customerNames) {
         List<Review> reviews = new ArrayList<>();
         String sql = "SELECT r.*, c.CustomerName FROM Review r JOIN Customer c ON r.CustomerID = c.CustomerID WHERE r.MovieID = ?";
@@ -124,7 +124,7 @@ public class MovieDAO extends DBContext {
                     review.setRating(rs.getInt("Rating"));
                     review.setComment(rs.getString("Comment"));
                     review.setReviewDate(rs.getDate("ReviewDate"));
-                    customerNames.put(review.getCustomerID(), rs.getString("CustomerName")); // Lấy tên khách hàng
+                    customerNames.put(review.getCustomerID(), rs.getString("CustomerName"));
                     reviews.add(review);
                 }
             }
@@ -196,4 +196,6 @@ public class MovieDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    
 }

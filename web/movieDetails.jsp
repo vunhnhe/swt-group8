@@ -110,6 +110,11 @@
                                 <p><strong>Release Date:</strong> ${movie.releaseDate}</p>
                                 <p><strong>Rating:</strong> ${averageRating} / 5</p>
                                 <p><strong>Description:</strong> ${movie.description}</p>
+                                
+                                <form action="selectShowtime" method="get">
+                                    <input type="hidden" name="movieId" value="${movie.movieID}">
+                                    <button type="submit" class="select-showtime-button">Select Showtime</button>
+                                </form>
                             </div>
                         </div>
                     </div>

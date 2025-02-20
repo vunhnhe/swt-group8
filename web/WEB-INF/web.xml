@@ -5,26 +5,6 @@
         <servlet-class>controller.LoginController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ShowtimeServlet</servlet-name>
-        <servlet-class>controller.ShowtimeServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SelectShowtimeServlet</servlet-name>
-        <servlet-class>controller.SelectShowtimeServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SeatSelectionServlet</servlet-name>
-        <servlet-class>controller.SeatSelectionServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ConfirmBookingServlet</servlet-name>
-        <servlet-class>controller.ConfirmBookingServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SuccessBookingServlet</servlet-name>
-        <servlet-class>controller.SuccessBookingServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>MovieDetailsServlet</servlet-name>
         <servlet-class>controller.MovieDetailsServlet</servlet-class>
     </servlet>
@@ -36,29 +16,13 @@
         <servlet-name>DeleteCommentServlet</servlet-name>
         <servlet-class>controller.DeleteCommentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SelectShowtimeServlet</servlet-name>
+        <servlet-class>controller.SelectShowtimeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ShowtimeServlet</servlet-name>
-        <url-pattern>/ShowtimeServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SelectShowtimeServlet</servlet-name>
-        <url-pattern>/SelectShowtimeServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SeatSelectionServlet</servlet-name>
-        <url-pattern>/SeatSelectionServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ConfirmBookingServlet</servlet-name>
-        <url-pattern>/ConfirmBookingServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SuccessBookingServlet</servlet-name>
-        <url-pattern>/SuccessBookingServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MovieDetailsServlet</servlet-name>
@@ -71,5 +35,9 @@
     <servlet-mapping>
         <servlet-name>DeleteCommentServlet</servlet-name>
         <url-pattern>/deleteComment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SelectShowtimeServlet</servlet-name>
+        <url-pattern>/selectShowtime</url-pattern>
     </servlet-mapping>
 </web-app>

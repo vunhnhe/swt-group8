@@ -3,6 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/GitHub/swp391-group6/src/java/controller/SelectShowtimeServlet.java</file>
+            <file>file:/D:/GitHub/swp391-group6/src/java/dal/ShowtimeDAO.java</file>
+            <file>file:/D:/GitHub/swp391-group6/web/selectShowtime.jsp</file>
+            <file>file:/D:/GitHub/swp391-group6/web/css/selectShowtime.css</file>
             <file>file:/D:/GitHub/swp391-group6/web/movieDetails.jsp</file>
             <file>file:/D:/GitHub/swp391-group6/web/css/movieDetails.css</file>
         </group>
