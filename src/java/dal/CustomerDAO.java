@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 public class CustomerDAO extends DBContext {
 
     private static final Logger LOGGER = Logger.getLogger(CustomerDAO.class.getName());
-    private static final String COLUMN_PASSWORD = "Password"; // Constant for "Password" column
+    private static final String COLUMN_PASSWORD = "Password"; 
+    private static final String COLUMN_ADDRESS = "Address";  
 
     public List<Customer> getAllCustomers() {
         try {
@@ -23,9 +24,9 @@ public class CustomerDAO extends DBContext {
                         rs.getInt("CustomerID"),
                         rs.getString("Phone"),
                         rs.getString("CustomerName"),
-                        rs.getString(COLUMN_PASSWORD), // Using the constant
+                        rs.getString(COLUMN_PASSWORD), 
                         rs.getString("Email"),
-                        rs.getString("Address")
+                        rs.getString(COLUMN_ADDRESS) 
                 );
                 customers.add(customer);
             }
@@ -49,7 +50,7 @@ public class CustomerDAO extends DBContext {
                         rs.getString("CustomerName"),
                         rs.getString(COLUMN_PASSWORD),
                         rs.getString("Email"),
-                        rs.getString("Address")
+                        rs.getString(COLUMN_ADDRESS)
                 );
             }
         } catch (SQLException ex) {
@@ -71,7 +72,7 @@ public class CustomerDAO extends DBContext {
                         rs.getString("CustomerName"),
                         rs.getString(COLUMN_PASSWORD),
                         rs.getString("Email"),
-                        rs.getString("Address")
+                        rs.getString(COLUMN_ADDRESS)
                 );
             }
         } catch (SQLException ex) {
@@ -93,7 +94,7 @@ public class CustomerDAO extends DBContext {
                         rs.getString("CustomerName"),
                         rs.getString(COLUMN_PASSWORD),
                         rs.getString("Email"),
-                        rs.getString("Address")
+                        rs.getString(COLUMN_ADDRESS)
                 );
             }
         } catch (SQLException ex) {
@@ -115,7 +116,7 @@ public class CustomerDAO extends DBContext {
                         rs.getString("CustomerName"),
                         rs.getString(COLUMN_PASSWORD),
                         rs.getString("Email"),
-                        rs.getString("Address")
+                        rs.getString(COLUMN_ADDRESS)
                 );
             }
         } catch (SQLException ex) {
@@ -126,7 +127,7 @@ public class CustomerDAO extends DBContext {
 
     public boolean updateCustomer(Customer customer) {
         try {
-            String sql = "UPDATE customer SET Phone=?, CustomerName=?, " + COLUMN_PASSWORD + "=?, Email=?, Address=? WHERE CustomerID=?";
+            String sql = "UPDATE customer SET Phone=?, CustomerName=?, " + COLUMN_PASSWORD + "=?, Email=?, " + COLUMN_ADDRESS + "=? WHERE CustomerID=?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, customer.getPhone());
             ps.setString(2, customer.getName());
