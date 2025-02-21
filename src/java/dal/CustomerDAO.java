@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dal;
 
 import java.util.ArrayList;
@@ -11,16 +7,14 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author tovie
- */
 public class CustomerDAO extends DBContext {
+
+    private static final Logger LOGGER = Logger.getLogger(CustomerDAO.class.getName());
 
     public List<Customer> getAllCustomers() {
         try {
             List<Customer> customers = new ArrayList<>();
-            String sql = "select * from customer";
+            String sql = "SELECT * FROM customer";
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -36,20 +30,19 @@ public class CustomerDAO extends DBContext {
             }
             return customers;
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, "Error fetching all customers", ex);
         }
         return null;
     }
 
     public Customer getCustomerByID(int id) {
         try {
-            Customer customer = null;
-            String sql = "select * from customer where CustomerID=?";
+            String sql = "SELECT * FROM customer WHERE CustomerID=?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                customer = new Customer(
+            if (rs.next()) {
+                return new Customer(
                         rs.getInt("CustomerID"),
                         rs.getString("Phone"),
                         rs.getString("CustomerName"),
@@ -58,22 +51,20 @@ public class CustomerDAO extends DBContext {
                         rs.getString("Address")
                 );
             }
-            return customer;
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, "Error fetching customer by ID: " + id, ex);
         }
         return null;
     }
 
     public Customer getCustomerByEmail(String email) {
         try {
-            Customer customer = null;
-            String sql = "select * from customer where Email=?";
+            String sql = "SELECT * FROM customer WHERE Email=?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                customer = new Customer(
+            if (rs.next()) {
+                return new Customer(
                         rs.getInt("CustomerID"),
                         rs.getString("Phone"),
                         rs.getString("CustomerName"),
@@ -82,64 +73,15 @@ public class CustomerDAO extends DBContext {
                         rs.getString("Address")
                 );
             }
-            return customer;
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    public Customer getCustomerByName(String name) {
-        try {
-            Customer customer = null;
-            String sql = "select * from customer where CustomerName=?";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, name);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                customer = new Customer(
-                        rs.getInt("CustomerID"),
-                        rs.getString("Phone"),
-                        rs.getString("CustomerName"),
-                        rs.getString("Password"),
-                        rs.getString("Email"),
-                        rs.getString("Address")
-                );
-            }
-            return customer;
-        } catch (SQLException ex) {
-            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    public Customer getCustomerByPassword(String password) {
-        try {
-            Customer customer = null;
-            String sql = "select * from customer where Password=?";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, password);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                customer = new Customer(
-                        rs.getInt("CustomerID"),
-                        rs.getString("Phone"),
-                        rs.getString("CustomerName"),
-                        rs.getString("Password"),
-                        rs.getString("Email"),
-                        rs.getString("Address")
-                );
-            }
-            return customer;
-        } catch (SQLException ex) {
-            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, "Error fetching customer by Email: " + email, ex);
         }
         return null;
     }
 
     public boolean updateCustomer(Customer customer) {
         try {
-            String sql = "update customer set Phone=?, CustomerName=?, Password=?, Email=?, Address=? where CustomerID=?";
+            String sql = "UPDATE customer SET Phone=?, CustomerName=?, Password=?, Email=?, Address=? WHERE CustomerID=?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, customer.getPhone());
             ps.setString(2, customer.getName());
@@ -150,26 +92,31 @@ public class CustomerDAO extends DBContext {
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, "Error updating customer: " + customer.getId(), ex);
         }
         return false;
     }
 
     public boolean deleteCustomer(int id) {
         try {
-            String sql = "delete from customer where CustomerID=?";
+            String sql = "DELETE FROM customer WHERE CustomerID=?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, "Error deleting customer with ID: " + id, ex);
         }
         return false;
     }
 
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
-        System.out.println(dao.getCustomerByID(2));
+        Customer customer = dao.getCustomerByID(2);
+        if (customer != null) {
+            LOGGER.info("Retrieved customer: " + customer);
+        } else {
+            LOGGER.warning("No customer found with ID: 2");
+        }
     }
 }
