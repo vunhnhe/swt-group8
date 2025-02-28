@@ -83,15 +83,20 @@ select {
     border: 1px solid #ccc;
 }
 
-.confirm-booking-button {
-    display: block;
+
+.confirm-booking-button-container {
+    display: flex;
+    justify-content: flex-end;
     margin-top: 20px;
+}
+.confirm-booking-button {
     padding: 10px 20px;
-    background-color: #ff5733;
+    background-color: coral;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    text-align: center;
 }
 
 .confirm-booking-button:hover {

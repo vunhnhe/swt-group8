@@ -1,9 +1,7 @@
 package controller;
 
 import dal.SeatDAO;
-import dal.ShowtimeDAO;
 import model.Seat;
-import model.Showtime;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -16,29 +14,28 @@ public class SelectSeatServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String cinemaIdParam = request.getParameter("cinemaId");
-        String screenIdParam = request.getParameter("screenId");
-        String showtimeIdParam = request.getParameter("showtimeId");
-
-        if (cinemaIdParam != null && screenIdParam != null && showtimeIdParam != null) {
-            int cinemaId = Integer.parseInt(cinemaIdParam);
-            int screenId = Integer.parseInt(screenIdParam);
-            int showtimeId = Integer.parseInt(showtimeIdParam);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            int movieId = Integer.parseInt(request.getParameter("movieId"));
+            String movieName = request.getParameter("movieName");
+            int cinemaId = Integer.parseInt(request.getParameter("cinemaId"));
+            String cinemaName = request.getParameter("cinemaName");
+            int screenId = Integer.parseInt(request.getParameter("screenId"));
+            String screenName = request.getParameter("screenName");
 
             SeatDAO seatDAO = new SeatDAO();
-            List<Seat> availableSeats = seatDAO.getAvailableSeats(cinemaId, screenId, showtimeId);
-
-            ShowtimeDAO showtimeDAO = new ShowtimeDAO();
-            Showtime showtime = showtimeDAO.getShowtimeById(showtimeId);
-
-            request.setAttribute("availableSeats", availableSeats);
+            List<Seat> seats = seatDAO.getSeatsByMovieCinemaScreen(movieId, cinemaId, screenId);
+            request.setAttribute("seats", seats);
+            request.setAttribute("movieId", movieId);
+            request.setAttribute("movieName", movieName);
             request.setAttribute("cinemaId", cinemaId);
+            request.setAttribute("cinemaName", cinemaName);
             request.setAttribute("screenId", screenId);
-            request.setAttribute("showtimeId", showtimeId);
-            request.setAttribute("movieTitle", showtime.getMovieID().getTitle());
+            request.setAttribute("screenName", screenName);
+            request.getRequestDispatcher("/selectSeat.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid parameters");
         }
-
-        request.getRequestDispatcher("/selectSeat.jsp").forward(request, response);
     }
 }

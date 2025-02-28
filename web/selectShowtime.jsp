@@ -44,7 +44,7 @@
                     document.getElementById('screen').innerHTML = '<option value="">--Select Screen--</option>';
                     document.getElementById('showtime').innerHTML = '<option value="">--Select Start Time--</option>';
                     document.getElementById('endtime').value = '';
-                    
+
                 });
 
                 document.getElementById('screen').addEventListener('change', function () {
@@ -53,14 +53,13 @@
                     document.getElementById('seat').disabled = true;
                     document.getElementById('showtime').innerHTML = '<option value="">--Select Start Time--</option>';
                     document.getElementById('endtime').value = '';
-                    
+
                 });
 
                 document.getElementById('showtime').addEventListener('change', function () {
                     var selectedOption = this.options[this.selectedIndex];
                     var endTime = selectedOption.getAttribute('data-endtime');
                     document.getElementById('endtime').value = endTime;
-                    fetchSeats();
                     document.getElementById('seat').disabled = false;
                 });
             });
@@ -118,8 +117,6 @@
                     document.getElementById('showtime').innerHTML = '<option value="">--Select Start Time--</option>';
                 }
             }
-
-            
         </script>
     </head>
     <body>
@@ -135,7 +132,12 @@
 
         <div class="container">
             <h2><%= movieTitle %></h2>
-            <form action="selectSeat.jsp" method="post">
+            <form action="selectSeat" method="post">
+                <input type="hidden" name="movieId" value="<%= movieId %>">
+                <input type="hidden" name="movieName" value="<%= movieTitle %>">
+                <input type="hidden" name="cinemaName" id="cinemaName">
+                <input type="hidden" name="screenName" id="screenName">
+
                 <label for="cinema">Cinema:</label>
                 <select id="cinema" name="cinemaId" required>
                     <option value="">--Select Cinema--</option>
@@ -174,8 +176,9 @@
                         </tr>
                     </table>
                 </div>
-
-                <button type="submit" class="confirm-booking-button">Select Seat</button>
+                <div class="confirm-booking-button-container">
+                    <button type="submit" class="confirm-booking-button">Select Seat</button>
+                </div>
             </form>
         </div>
         <footer class="footer">
@@ -201,5 +204,17 @@
                 </div>
             </div>
         </footer>
+        <script>
+            document.getElementById('cinema').addEventListener('change', function () {
+                var selectedCinema = this.options[this.selectedIndex].text;
+                document.getElementById('cinemaName').value = selectedCinema;
+            });
+
+            document.getElementById('screen').addEventListener('change', function () {
+                var selectedScreen = this.options[this.selectedIndex].text;
+                document.getElementById('screenName').value = selectedScreen;
+            });
+        </script>
     </body>
 </html>
+

@@ -1,23 +1,33 @@
 package dal;
 
 import model.Seat;
+import model.Screen;
+import model.Cinema;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import model.Movie;
 
 public class SeatDAO extends DBContext {
 
-    public List<Seat> getAvailableSeats(int cinemaId, int screenId, int showtimeId) {
-        List<Seat> availableSeats = new ArrayList<>();
-        String sql = "SELECT s.* FROM Seat s " +
-                     "WHERE s.ScreenID = ? AND s.SeatID NOT IN " +
-                     "(SELECT r.SeatID FROM Reservation r WHERE r.ShowtimeID = ?)";
+    public List<Seat> getSeatsByMovieCinemaScreen(int movieId, int cinemaId, int screenId) {
+        List<Seat> seats = new ArrayList<>();
+        String sql = "SELECT DISTINCT s.SeatID, s.SeatNumber, s.SeatType, s.Price, " +
+                     "sc.ScreenID, sc.ScreenName, " +
+                     "c.CinemaID, c.CinemaName " +
+                     "FROM Seat s " +
+                     "JOIN Screen sc ON s.ScreenID = sc.ScreenID " +
+                     "JOIN Cinema c ON sc.CinemaID = c.CinemaID " +
+                     "JOIN Showtime sh ON sc.ScreenID = sh.ScreenID " +
+                     "WHERE c.CinemaID = ? AND sc.ScreenID = ? AND sh.MovieID = ?";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, screenId);
-            ps.setInt(2, showtimeId);
+            ps.setInt(1, cinemaId);
+            ps.setInt(2, screenId);
+            ps.setInt(3, movieId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Seat seat = new Seat();
@@ -25,12 +35,23 @@ public class SeatDAO extends DBContext {
                     seat.setSeatNumber(rs.getString("SeatNumber"));
                     seat.setSeatType(rs.getString("SeatType"));
                     seat.setPrice(rs.getDouble("Price"));
-                    availableSeats.add(seat);
+
+                    Screen screen = new Screen();
+                    screen.setScreenID(rs.getInt("ScreenID"));
+                    screen.setScreenName(rs.getString("ScreenName"));
+
+                    Cinema cinema = new Cinema();
+                    cinema.setCinemaID(rs.getInt("CinemaID"));
+                    cinema.setCinemaName(rs.getString("CinemaName"));
+
+                    seat.setScreen(screen);
+
+                    seats.add(seat);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return availableSeats;
+        return seats;
     }
 }

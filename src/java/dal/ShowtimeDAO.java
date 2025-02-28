@@ -15,16 +15,14 @@ import model.Movie;
 
 public class ShowtimeDAO extends DBContext {
 
-    
     public List<Showtime> getShowtimesByMovieId(int movieID) {
         List<Showtime> showtimes = new ArrayList<>();
-        String sql = "SELECT s.*, sc.*, c.*, a.* FROM Showtime s " +
-                     "JOIN Screen sc ON s.ScreenID = sc.ScreenID " +
-                     "JOIN Cinema c ON sc.CinemaID = c.CinemaID " +
-                     "JOIN Admin a ON s.AdminID = a.AdminID " +
-                     "WHERE s.MovieID = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT s.*, sc.*, c.*, a.* FROM Showtime s "
+                + "JOIN Screen sc ON s.ScreenID = sc.ScreenID "
+                + "JOIN Cinema c ON sc.CinemaID = c.CinemaID "
+                + "JOIN Admin a ON s.AdminID = a.AdminID "
+                + "WHERE s.MovieID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, movieID);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -62,15 +60,14 @@ public class ShowtimeDAO extends DBContext {
         }
         return showtimes;
     }
-    
+
     public List<Screen> getScreensByCinemaAndMovie(int cinemaId, int movieId) {
         List<Screen> screens = new ArrayList<>();
-        String sql = "SELECT DISTINCT sc.ScreenID, sc.ScreenName, sc.TotalSeat " +
-                     "FROM Screen sc " +
-                     "JOIN Showtime s ON sc.ScreenID = s.ScreenID " +
-                     "WHERE sc.CinemaID = ? AND s.MovieID = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT DISTINCT sc.ScreenID, sc.ScreenName, sc.TotalSeat "
+                + "FROM Screen sc "
+                + "JOIN Showtime s ON sc.ScreenID = s.ScreenID "
+                + "WHERE sc.CinemaID = ? AND s.MovieID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, cinemaId);
             ps.setInt(2, movieId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -87,15 +84,13 @@ public class ShowtimeDAO extends DBContext {
         }
         return screens;
     }
-    
-    
+
     public List<Showtime> getShowtimesByCinemaScreenAndMovie(int cinemaId, int screenId, int movieId) {
         List<Showtime> showtimes = new ArrayList<>();
-        String sql = "SELECT s.* FROM Showtime s " +
-                     "JOIN Screen sc ON s.ScreenID = sc.ScreenID " +
-                     "WHERE sc.CinemaID = ? AND sc.ScreenID = ? AND s.MovieID = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT s.* FROM Showtime s "
+                + "JOIN Screen sc ON s.ScreenID = sc.ScreenID "
+                + "WHERE sc.CinemaID = ? AND sc.ScreenID = ? AND s.MovieID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, cinemaId);
             ps.setInt(2, screenId);
             ps.setInt(3, movieId);
@@ -113,15 +108,11 @@ public class ShowtimeDAO extends DBContext {
         }
         return showtimes;
     }
-    
-    
 
     public List<Cinema> getAllCinemas() {
         List<Cinema> cinemas = new ArrayList<>();
         String sql = "SELECT * FROM Cinema";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Cinema cinema = new Cinema();
                 cinema.setCinemaID(rs.getInt("CinemaID"));
@@ -139,9 +130,7 @@ public class ShowtimeDAO extends DBContext {
     public List<Screen> getAllScreens() {
         List<Screen> screens = new ArrayList<>();
         String sql = "SELECT * FROM Screen";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Screen screen = new Screen();
                 screen.setScreenID(rs.getInt("ScreenID"));
@@ -154,16 +143,16 @@ public class ShowtimeDAO extends DBContext {
         }
         return screens;
     }
-public Showtime getShowtimeById(int showtimeId) {
+
+    public Showtime getShowtimeById(int showtimeId) {
         Showtime showtime = null;
-        String sql = "SELECT s.*, sc.*, c.*, a.*, m.* FROM Showtime s " +
-                     "JOIN Screen sc ON s.ScreenID = sc.ScreenID " +
-                     "JOIN Cinema c ON sc.CinemaID = c.CinemaID " +
-                     "JOIN Admin a ON s.AdminID = a.AdminID " +
-                     "JOIN Movie m ON s.MovieID = m.MovieID " +
-                     "WHERE s.ShowtimeID = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "SELECT s.*, sc.*, c.*, a.*, m.* FROM Showtime s "
+                + "JOIN Screen sc ON s.ScreenID = sc.ScreenID "
+                + "JOIN Cinema c ON sc.CinemaID = c.CinemaID "
+                + "JOIN Admin a ON s.AdminID = a.AdminID "
+                + "JOIN Movie m ON s.MovieID = m.MovieID "
+                + "WHERE s.ShowtimeID = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, showtimeId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -208,4 +197,5 @@ public Showtime getShowtimeById(int showtimeId) {
         }
         return showtime;
     }
+
 }
