@@ -31,13 +31,14 @@ public class ViewUserController extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("update".equals(action)) {
+            int showtimeID = Integer.parseInt(request.getParameter("customerID"));
             String phone = request.getParameter("phone");
             String name = request.getParameter("name");
             String password = request.getParameter("password");
             String email = request.getParameter("email");
             String address = request.getParameter("address");
 
-            Customer customer = new Customer(0, phone, name, password, email, address);
+            Customer customer = new Customer(showtimeID, phone, name, password, email, address);
             CustomerDAO dao = new CustomerDAO();
             dao.updateCustomer(customer);
         } else if ("add".equals(action)) {  // Xử lý thêm người dùng
