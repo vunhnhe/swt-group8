@@ -93,18 +93,18 @@
     </div>
     <div class="navbar">
         <a href="adminDashboard.jsp">Home</a>
-        <a href="manageUsers.jsp">Manage Users</a>
+        <a href="user">Manage Users</a>
         <a href="manageMovies.jsp">Manage Movies</a>
-        <a href="manageShowtimes.jsp">Manage Showtimes</a>
+        <a href="Showtime">Manage Showtimes</a>
         <a href="manageBookings.jsp">Manage Bookings</a>
         <a href="manageReviews.jsp">Manage Reviews</a>
         <a href="manageVouchers.jsp">Manage Vouchers</a>
     </div>
     <div class="container">
         <div class="admin-actions">
-            <a href="manageUsers.jsp">Manage Users</a>
+            <a href="user">Manage Users</a>
             <a href="manageMovies.jsp">Manage Movies</a>
-            <a href="manageShowtimes.jsp">Manage Showtimes</a>
+            <a href="Showtime">Manage Showtimes</a>
             <a href="manageBookings.jsp">Manage Bookings</a>
             <a href="manageReviews.jsp">Manage Reviews</a>
             <a href="manageVouchers.jsp">Manage Vouchers</a>
